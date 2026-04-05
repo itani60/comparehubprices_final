@@ -33,14 +33,24 @@
         const ua = navigator.userAgent || '';
         const platform = navigator.platform || '';
         const maxTouchPoints = Number(navigator.maxTouchPoints || 0);
+        const uaDataMobile = navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean'
+          ? navigator.userAgentData.mobile
+          : false;
         const isIpadOs = platform === 'MacIntel' && maxTouchPoints > 1;
         const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
         const uaMobileTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(ua);
         const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
         const shortestViewportEdge = Math.min(window.innerWidth || 0, window.innerHeight || 0);
         const touchTabletViewport = coarsePointer && shortestViewportEdge >= 600 && shortestViewportEdge <= 1280;
+        const emulatedMobileViewport = shortestViewportEdge > 0 && shortestViewportEdge <= 1024 && maxTouchPoints > 0;
         const isMobileOrTablet =
-          uaMobileTablet || isIpadOs || isAndroidTablet || touchTabletViewport || savedView === 'mobile';
+          uaMobileTablet ||
+          uaDataMobile ||
+          isIpadOs ||
+          isAndroidTablet ||
+          touchTabletViewport ||
+          emulatedMobileViewport ||
+          savedView === 'mobile';
 
         // Keep desktop preference only for non-mobile/non-tablet devices.
         if (!isMobileOrTablet && savedView === 'desktop') return;
@@ -49,8 +59,11 @@
 
         const path = window.location.pathname;
         const last = path.split('/').pop() || '';
+        const isLocalDevHost = /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname || '');
         let basePath = '/';
-        if (path.endsWith('/')) {
+        if (isLocalDevHost) {
+          basePath = '/';
+        } else if (path.endsWith('/')) {
           basePath = path;
         } else if (last.includes('.')) {
           basePath = path.slice(0, path.lastIndexOf('/') + 1) || '/';
@@ -58,13 +71,20 @@
           basePath = `${path}/`;
         }
 
-        window.location.replace(`${basePath}mobile.html${window.location.search}${window.location.hash}`);
+        const currentParams = new URLSearchParams(window.location.search || '');
+        if (!currentParams.has('mobile_page') && currentParams.has('page')) {
+          currentParams.set('mobile_page', currentParams.get('page') || '');
+          currentParams.delete('page');
+        }
+
+        const nextSearch = currentParams.toString();
+        window.location.replace(`${basePath}mobile.html${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`);
       })();
     </script>
-    <script type="module" crossorigin src="/assets/main-Dy0OZxa_.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/tailwind-DJls41ia.js">
-    <link rel="modulepreload" crossorigin href="/assets/chatApi-CTy7o-Bo.js">
-    <link rel="stylesheet" crossorigin href="/assets/tailwind-C6SjUHLy.css">
+    <script type="module" crossorigin src="/assets/main-Bqj1O96d.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/tailwind-D5IvL1JU.js">
+    <link rel="modulepreload" crossorigin href="/assets/price-alert-modal-CJD0hG1B.js">
+    <link rel="stylesheet" crossorigin href="/assets/tailwind-qOg4l6H2.css">
   </head>
   <body>
     <div id="root"></div>
