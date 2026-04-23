@@ -10,82 +10,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       referrerpolicy="no-referrer"
     />
-    <script>
-      (function redirectMobileDevices() {
-        const params = new URLSearchParams(window.location.search);
-        const forcedView = params.get('view');
-        const prefKey = 'chp_preferred_view';
-
-        try {
-          if (forcedView === 'desktop') localStorage.setItem(prefKey, 'desktop');
-          if (forcedView === 'mobile') localStorage.setItem(prefKey, 'mobile');
-        } catch {
-          // ignore storage errors
-        }
-
-        let savedView = '';
-        try {
-          savedView = localStorage.getItem(prefKey) || '';
-        } catch {
-          savedView = '';
-        }
-        if (forcedView === 'desktop') return;
-
-        const ua = navigator.userAgent || '';
-        const platform = navigator.platform || '';
-        const maxTouchPoints = Number(navigator.maxTouchPoints || 0);
-        const uaDataMobile = navigator.userAgentData && typeof navigator.userAgentData.mobile === 'boolean'
-          ? navigator.userAgentData.mobile
-          : false;
-        const isIpadOs = platform === 'MacIntel' && maxTouchPoints > 1;
-        const isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
-        const uaMobileTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(ua);
-        const coarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-        const shortestViewportEdge = Math.min(window.innerWidth || 0, window.innerHeight || 0);
-        const touchTabletViewport = coarsePointer && shortestViewportEdge >= 600 && shortestViewportEdge <= 1280;
-        const emulatedMobileViewport = shortestViewportEdge > 0 && shortestViewportEdge <= 1024 && maxTouchPoints > 0;
-        const isMobileOrTablet =
-          uaMobileTablet ||
-          uaDataMobile ||
-          isIpadOs ||
-          isAndroidTablet ||
-          touchTabletViewport ||
-          emulatedMobileViewport ||
-          savedView === 'mobile';
-
-        // Keep desktop preference only for non-mobile/non-tablet devices.
-        if (!isMobileOrTablet && savedView === 'desktop') return;
-        if (!isMobileOrTablet) return;
-        if (window.location.pathname.endsWith('/mobile.html')) return;
-
-        const path = window.location.pathname;
-        const last = path.split('/').pop() || '';
-        const isLocalDevHost = /^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname || '');
-        let basePath = '/';
-        if (isLocalDevHost) {
-          basePath = '/';
-        } else if (path.endsWith('/')) {
-          basePath = path;
-        } else if (last.includes('.')) {
-          basePath = path.slice(0, path.lastIndexOf('/') + 1) || '/';
-        } else {
-          basePath = `${path}/`;
-        }
-
-        const currentParams = new URLSearchParams(window.location.search || '');
-        if (!currentParams.has('mobile_page') && currentParams.has('page')) {
-          currentParams.set('mobile_page', currentParams.get('page') || '');
-          currentParams.delete('page');
-        }
-
-        const nextSearch = currentParams.toString();
-        window.location.replace(`${basePath}mobile.html${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`);
-      })();
-    </script>
-    <script type="module" crossorigin src="/assets/entry/main-VHv4q-rs.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/chunks/tailwind-W9oaFFkn.js">
-    <link rel="modulepreload" crossorigin href="/assets/chunks/tracking-pages-api-2Cw0gk-b.js">
-    <link rel="stylesheet" crossorigin href="/assets/styles/tailwind-Sq2giBru.css">
+    <script type="module" crossorigin src="/assets/entry/main-BgpN8CMA.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/styles/main-BLN6QlMe.css">
   </head>
   <body>
     <div id="root"></div>

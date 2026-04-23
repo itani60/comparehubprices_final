@@ -1,0 +1,1 @@
+import{c as i}from"./index-C9oWVvfZ.js";function o(e,n){try{if(typeof window<"u"&&window.__chpSupabaseClient)return window.__chpSupabaseClient;const t=i(e,n);return typeof window<"u"&&(window.__chpSupabaseClient=t),t}catch{return null}}export{o as g};
